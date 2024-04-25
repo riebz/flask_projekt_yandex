@@ -28,6 +28,7 @@
     <h1>Игра "Крестики-нолики"</h1>
     {% if winner %}
         <h2>Победитель: {{ winner }}</h2>
+        <a href="{{ url_for('index') }}">Начать новую игру</a>
     {% else %}
         <form action="{{ url_for('game') }}" method="post">
             <div class="board" style="grid-template-rows: repeat({{ size }}, auto);">
@@ -35,14 +36,14 @@
                     <div class="board-row">
                         {% for j in range(size) %}
                             <button type="submit" class="board-cell"
-                                name="move" value="{{ i }}_{{ j }}">
+                                    name="move" value="{{ i }}_{{ j }}">
                                 {{ board[i][j] }}
                             </button>
                         {% endfor %}
                     </div>
                 {% endfor %}
             </div>
-            <button type="submit" name="new_game">Начать новую игру</button>
+            <button type="submit" name="new_game" value="true">Начать новую игру</button>
         </form>
     {% endif %}
 </body>

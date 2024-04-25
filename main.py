@@ -3,45 +3,40 @@ from flask import Flask, render_template, request, redirect, url_for, session
 app = Flask(__name__)
 app.secret_key = 'your_secret_key'
 
-
-def create_board(size):
-    return [[" " for _ in range(size)] for _ in range(size)]
-
-
-def check_winner(board, player):
-    size = len(board)
-    for i in range(size):
-        if all(cell == player for cell in board[i]) or all(board[j][i] == player for j in range(size)):
-            return True
-    if all(board[i][i] == player for i in range(size)) or all(board[i][size - 1 - i] == player for i in range(size)):
-        return True
-    return False
-
-
-def is_board_full(board):
-    for row in board:
-        if " " in row:
-            return False
-    return True
-
+from game_X_O import create_board, check_winner, is_board_full, reset_game
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
+    if request.method == 'POST':
+        session['board'] = create_board(3)
+        session['current_player'] = 'X'
+        session['size'] = 3
+        return redirect(url_for('game'))
     return render_template('index.html')
-
 
 @app.route('/game', methods=['GET', 'POST'])
 def game():
-    size = session.get('size')
-    if size is None:
-        size = 3
-        session['size'] = size
+    if 'new_game' in request.form:
+        reset_game(session)  # Сброс игры
+        return redirect(url_for('game'))
+    # Если в сессии нет доски, создаем новую
+    if 'board' not in session:
+        session['board'] = create_board(3)
+        session['current_player'] = 'X'
+        session['size'] = 3
 
     board = session['board']
     current_player = session['current_player']
+    size = session['size']
     winner = None
 
     if request.method == 'POST':
+        if 'new_game' in request.form:
+            session.pop('board', None)
+            session.pop('current_player', None)
+            session.pop('size', None)
+            return redirect(url_for('index'))
+
         move = request.form.get('move')
         if move:
             row, col = map(int, move.split('_'))
@@ -53,9 +48,9 @@ def game():
                     winner = 'Ничья'
                 else:
                     session['current_player'] = 'O' if current_player == 'X' else 'X'
-            session.modified = True
+                session['board'] = board
 
     return render_template('game.html', board=board, size=size, winner=winner)
 
 if __name__ == '__main__':
-    app.run(debug=True)##
+    app.run(debug=True)

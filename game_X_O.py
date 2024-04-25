@@ -1,5 +1,12 @@
+# game_X_O.py
+
 def create_board(size=3):
     return [[" " for _ in range(size)] for _ in range(size)]
+
+def reset_game(session):
+    size = session.get('size', 3)
+    session['board'] = create_board(size)
+    session['current_player'] = 'X'
 
 def is_valid_move(board, row, col):
     return board[row][col] == " "
