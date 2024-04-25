@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Игра "Крестики-нолики"</title>
+    <style>
+        .board {
+            display: grid;
+            grid-template-columns: repeat({{ size }}, auto);
+            gap: 5px;
+            justify-content: start;
+            margin-bottom: 20px;
+        }
+        .board-cell {
+            width: 60px;
+            height: 60px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 2em;
+            border: 1px solid #999;
+            background-color: #f0f0f0;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <h1>Игра "Крестики-нолики"</h1>
+    {% if winner %}
+        <h2>Победитель: {{ winner }}</h2>
+    {% else %}
+        <form action="{{ url_for('game') }}" method="post">
+            <div class="board" style="grid-template-rows: repeat({{ size }}, auto);">
+                {% for i in range(size) %}
+                    <div class="board-row">
+                        {% for j in range(size) %}
+                            <button type="submit" class="board-cell"
+                                name="move" value="{{ i }}_{{ j }}">
+                                {{ board[i][j] }}
+                            </button>
+                        {% endfor %}
+                    </div>
+                {% endfor %}
+            </div>
+            <button type="submit" name="new_game">Начать новую игру</button>
+        </form>
+    {% endif %}
+</body>
+</html>
