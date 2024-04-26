@@ -1,0 +1,20 @@
+<!-- templates/weather.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Погода</title>
+</head>
+<body>
+    <h1>Узнать погоду</h1>
+    <form action="{{ url_for('weather') }}" method="get"> <!-- Измените на method="get" -->
+        <input type="text" name="city" placeholder="Введите город">
+        <button type="submit">Получить погоду</button>
+    </form>
+    {% if weather_data %}
+        <h2>Погода в {{ weather_data['name'] }}:</h2>
+        <p>Температура: {{ weather_data['main']['temp'] }}°C</p>
+        <p>Описание: {{ weather_data['weather'][0]['description'] }}</p>
+    {% endif %}
+</body>
+</html>

@@ -1,9 +1,31 @@
-<!-- index.html -->
-<form action="{{ url_for('index') }}" method="post">
-    <label for="board_size">Выберите размер поля:</label>
-    <select name="board_size" id="board_size">
-        <option value="3">Поле 3x3</option>
-        <option value="9">Поле 9x9</option>
-    </select>
-    <button type="submit">Начать игру</button>
-</form>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Игра и Погода</title>
+</head>
+<body>
+    <h1>Добро пожаловать в игру "Крестики-нолики"</h1>
+    <form action="{{ url_for('index') }}" method="post">
+        <label for="board_size">Выберите размер поля:</label>
+        <select name="board_size" id="board_size">
+            <option value="3">Поле 3x3</option>
+            <option value="9">Поле 9x9</option>
+        </select>
+        <button type="submit">Начать игру</button>
+    </form>
+
+    <h1>Узнать погоду</h1>
+    <form action="{{ url_for('weather') }}" method="post">
+        <input type="text" name="city" placeholder="Введите город">
+        <button type="submit">Получить погоду</button>
+    </form>
+    {% if weather_info %}
+        <h2>Погода в {{ weather_info['name'] }}:</h2>
+        <p>Температура: {{ weather_info['main']['temp'] }}°C</p>
+        <p>Описание: {{ weather_info['weather'][0]['description'] }}</p>
+    {% endif %}
+<!-- Добавьте эту ссылку в ваш index.html -->
+<a href="{{ url_for('register') }}">Регистрация нового пользователя</a>
+</body>
+</html>
