@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Игра "Крестики-нолики" 9x9</title>
+    <style>
+        .big-board {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px; /* Отступ между большими клетками */
+            max-width: max-content;
+            margin: auto;
+        }
+        .small-board {
+            display: grid;
+            grid-template-columns: repeat(3, 60px); /* Размер маленьких клеток */
+            gap: 2px; /* Отступ между маленькими клетками */
+        }
+        .board-cell {
+            width: 60px;
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 1px solid #999;
+            background-color: #f0f0f0;
+            font-size: 1em;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <h1>Игра "Крестики-нолики" 9x9</h1>
+    {% if winner %}
+        <h2>Победитель: {{ winner }}</h2>
+        <a href="{{ url_for('index') }}">Начать новую игру</a>
+    {% else %}
+        <div class="big-board">
+            {% for small_board in board %}
+                <div class="small-board">
+                    {% for row in small_board %}
+                        {% for cell in row %}
+                            <div class="board-cell">{{ cell }}</div>
+                        {% endfor %}
+                    {% endfor %}
+                </div>
+            {% endfor %}
+        </div>
+        <form action="{{ url_for('game') }}" method="post">
+            <button type="submit" name="new_game" value="true">Начать новую игру</button>
+        </form>
+    {% endif %}
+</body>
+</html>
