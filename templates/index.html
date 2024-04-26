@@ -1,19 +1,9 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Выбор размера игрового поля</title>
-</head>
-<body>
-    <h1>Добро пожаловать в игру "Крестики-нолики"</h1>
-    <form action="{{ url_for('game') }}" method="post">
-        <label for="board_size">Выберите размер поля:</label>
-        <select name="board_size" id="board_size">
-            <option value="3">Поле 3x3</option>
-            <option value="9">Поле 9x9</option>
-            <option value="27">Поле 27x27</option>
-        </select>
-        <button type="submit">Начать игру</button>
-    </form>
-</body>
-</html>
+<!-- index.html -->
+<form action="{{ url_for('index') }}" method="post">
+    <label for="board_size">Выберите размер поля:</label>
+    <select name="board_size" id="board_size">
+        <option value="3">Поле 3x3</option>
+        <option value="9">Поле 9x9</option>
+    </select>
+    <button type="submit">Начать игру</button>
+</form>

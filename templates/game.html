@@ -6,10 +6,10 @@
     <style>
         .board {
             display: grid;
-            grid-template-columns: repeat({{ size }}, auto);
+            grid-template-columns: repeat(3, 1fr);
             gap: 5px;
-            justify-content: start;
-            margin-bottom: 20px;
+            max-width: max-content;
+            margin: auto;
         }
         .board-cell {
             width: 60px;
@@ -28,22 +28,20 @@
     <h1>Игра "Крестики-нолики"</h1>
     {% if winner %}
         <h2>Победитель: {{ winner }}</h2>
-        <a href="{{ url_for('index') }}">Начать новую игру</a>
+        <form action="{{ url_for('index') }}" method="post">
+            <button type="submit" name="new_game" value="true">Начать новую игру</button>
+        </form>
     {% else %}
         <form action="{{ url_for('game') }}" method="post">
-            <div class="board" style="grid-template-rows: repeat({{ size }}, auto);">
-                {% for i in range(size) %}
-                    <div class="board-row">
-                        {% for j in range(size) %}
-                            <button type="submit" class="board-cell"
-                                    name="move" value="{{ i }}_{{ j }}">
-                                {{ board[i][j] }}
-                            </button>
-                        {% endfor %}
-                    </div>
+            <div class="board">
+                {% for i in range(3) %}
+                    {% for j in range(3) %}
+                        <button type="submit" class="board-cell" name="move" value="{{ i }}_{{ j }}">
+                            {{ board[i][j] }}
+                        </button>
+                    {% endfor %}
                 {% endfor %}
             </div>
-            <button type="submit" name="new_game" value="true">Начать новую игру</button>
         </form>
     {% endif %}
 </body>
